@@ -7,6 +7,8 @@ All python scripts use the configuration.txt file
 1.  directory -->> load_csv_to_mongo
 
      Standalone, independent code to upload the train and test csv files to MongoDB hosted on an AWS machine.
+     
+     This is done only to have the data on a separate node.
 
 2.  Created a base Pyspark image with all the required dependencies.
 
