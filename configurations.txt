@@ -1,0 +1,17 @@
+[fetch_train_data]
+mongo_uri = mongodb://44.196.180.92:38128/#?authSource=admin&readPreference=primary&ssl=false
+database_name = House-SalePrice
+train_collection_name = train-data
+data_csv = /usr/src/app/house_data.csv
+
+[data_preprocess]
+data_csv = /usr/src/app/house_data.csv
+preprocessed_data_csv = /usr/src/app/preprocessed_data.csv
+data_preprocess_pipeline = /usr/src/app/data_preprocess_pipeline
+
+[feature_process]
+preprocessed_data_csv = /usr/src/app/preprocessed_data.csv
+feature_scaled_data_csv = /usr/src/app/feature_scaled_data.csv
+feature_scaled_pipeline = /usr/src/app/feature_scaled_pipeline
+predicted_data_csv = /usr/src/app/predicted_data.csv
+reg_model_path = /usr/src/app/regressor_model

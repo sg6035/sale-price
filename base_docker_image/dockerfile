@@ -1,0 +1,40 @@
+FROM python:3.10-slim-bullseye
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+USER root
+
+RUN pip install --no-cache-dir numpy \
+    && pip install --no-cache-dir pandas
+
+# Spark dependencies
+ENV APACHE_SPARK_VERSION=3.0.0
+ENV HADOOP_VERSION=3.2
+ENV SPARK_PACKAGE=spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}
+
+ENV SPARK_HOME=/usr/local/spark
+
+RUN apt-get -y update && \
+    apt-get install -y wget && \
+    apt-get install --no-install-recommends -y openjdk-11-jre-headless ca-certificates-java && \
+    rm -rf /var/lib/apt/lists/*
+
+# Using the preferred mirror to download Spark
+WORKDIR /tmp
+
+RUN wget https://archive.apache.org/dist/spark/spark-3.0.0/${SPARK_PACKAGE}.tgz \
+    && tar -xvf ${SPARK_PACKAGE}.tgz \
+    && mv /tmp/$SPARK_PACKAGE $SPARK_HOME \
+    && chown -R root:root $SPARK_HOME
+
+WORKDIR /usr/local
+
+RUN ln -s "spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}" spark
+
+# Configure Spark
+
+ENV PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip \
+    SPARK_OPTS="--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info" \
+    PATH=$PATH:$SPARK_HOME/bin
+
+COPY *.jar ${SPARK_HOME}/jars/.

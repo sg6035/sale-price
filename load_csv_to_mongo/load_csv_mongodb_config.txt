@@ -1,0 +1,7 @@
+[load_csv_mongodb]
+mongo_client = mongodb://44.196.180.92:38128/?authSource=admin&readPreference=primary&ssl=false
+database_name = House-SalePrice
+test_file_name = ./test.csv
+test_col_name =  test-data
+train_file_name = ./train.csv
+train_col_name =  train-data

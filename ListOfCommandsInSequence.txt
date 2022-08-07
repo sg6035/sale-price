@@ -1,0 +1,77 @@
+1. 
+docker image build -t base_image base_docker_image/.
+
+2. 
+docker tag base_image gaddamsrikanth24/house-prices:latest
+docker push gaddamsrikanth24/house-prices:latest
+
+3.
+docker image build -t fetch_data_from_db . -f fetch_data_from_DB.dockerfile
+docker tag fetch_data_from_db gaddamsrikanth24/house-prices:fetch_data_from_db
+docker push gaddamsrikanth24/house-prices:fetch_data_from_db
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:fetch_data_from_db
+
+4.
+docker image build -t data_preprocess_pipeline . -f data_preprocess_pipeline.dockerfile
+docker tag data_preprocess_pipeline gaddamsrikanth24/house-prices:data_preprocess_pipeline
+docker push gaddamsrikanth24/house-prices:data_preprocess_pipeline
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:data_preprocess_pipeline
+
+5.
+docker image build -t data_preprocess . -f data_preprocess.dockerfile
+docker tag data_preprocess gaddamsrikanth24/house-prices:data_preprocess
+docker push gaddamsrikanth24/house-prices:data_preprocess
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:data_preprocess
+
+6.
+docker image build -t feature_processing_pipeline . -f feature_processing_pipeline.dockerfile
+docker tag feature_processing_pipeline gaddamsrikanth24/house-prices:feature_processing_pipeline
+docker push gaddamsrikanth24/house-prices:feature_processing_pipeline
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:feature_processing_pipeline
+
+7. 
+docker image build -t scale_model . -f scale_model.dockerfile
+docker tag scale_model gaddamsrikanth24/house-prices:scale_model
+docker push gaddamsrikanth24/house-prices:scale_model
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:scale_model
+
+8.
+docker image build -t eval_metrics . -f eval_metrics.dockerfile
+docker tag eval_metrics gaddamsrikanth24/house-prices:eval_metrics
+docker push gaddamsrikanth24/house-prices:eval_metrics
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:eval_metrics
+
+
+------------------
+------------------
+TESTING
+------------------
+------------------
+
+1.
+docker image build -t fetch_test_data . -f fetch_test_data.dockerfile
+docker tag fetch_test_data gaddamsrikanth24/house-prices:fetch_test_data
+docker push gaddamsrikanth24/house-prices:fetch_test_data
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:fetch_test_data
+
+2.
+docker image build -t predict_prices . -f predict_prices.dockerfile
+docker tag predict_prices gaddamsrikanth24/house-prices:predict_prices
+docker push gaddamsrikanth24/house-prices:predict_prices
+
+RUN COMMAND :::: 
+docker run --mount source=house_prices,destination=/usr/src/app gaddamsrikanth24/house-prices:predict_prices

@@ -1,0 +1,13 @@
+[fetch_test_data]
+mongo_uri = mongodb://44.196.180.92:38128/#?authSource=admin&readPreference=primary&ssl=false
+database_name = House-SalePrice
+test_collection_name = test-data
+data_csv = /usr/src/app/house_test_data.csv
+
+[predict]
+data_csv = /usr/src/app/house_test_data.csv
+preprocessed_data_csv = /usr/src/app/preprocessed_test_data.csv
+data_preprocess_pipeline = /usr/src/app/data_preprocess_pipeline
+feature_scaled_pipeline = /usr/src/app/feature_scaled_pipeline
+predicted_test_data_csv = /usr/src/app/predicted_test_data.csv
+reg_model_path = /usr/src/app/regressor_model
