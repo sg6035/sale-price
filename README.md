@@ -1,8 +1,5 @@
 # House_Price_Prediction_GL
 
-
-# House_Price_Prediction_GL
-
 ## Explanation of the Model built
 
 All python scripts use the configuration.txt file 
